@@ -5,45 +5,20 @@ import React,{Component} from 'react';
 import {AppRegistry,StyleSheet,View,Text} from 'react-native';
 
 
-
+let constantData = require('./data/SimpleExample.json');
+let newJSONString = JSON.stringify(constantData);
 export default class LearnRN extends Component{
+    
 
     render(){
+        
+        constantData.employees.map((item)=>{
+            console.log(item.FamilyName+item.givenName+'的工资是'+item.salary+'元')
+        })
+        console.log(newJSONString);
         return (
             <View style={styles.container}> 
-                <Text style={styles.welcome0}>
-                    aaWelcome to React Native!
-                </Text>
-                <Text style={styles.welcome1}>
-                    aaWelcome to React Native!
-                </Text>
-                {/* <Text style={styles.welcome2}>
-                    aaWelcome to React Native!
-                </Text>
-                <Text style={styles.welcome3}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome4}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome5}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome6}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome7}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome8}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome9}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.welcome10}>
-                    Welcome to React Native!
-                </Text> */}
+
             </View>
         )
     }
