@@ -4,8 +4,8 @@
 import React,{Component} from 'react';
 import {AppRegistry} from 'react-native';
 import DiaryList from './DiaryList/DiaryList';
-// import DiaryReader from './DiaryReader';
-// import DiaryWriter from './DiaryWriter';
+import DiaryReader from './DiaryReader/DiaryReader';
+import DiaryWriter from './DiaryWriter/DiaryWriter';
 
 
 
@@ -27,7 +27,7 @@ export default class LearnRN extends Component{
     };
 
     render(){
-      return this.showDiaryList();  
+      return this.showDiaryWriter();  
       
     }
 
