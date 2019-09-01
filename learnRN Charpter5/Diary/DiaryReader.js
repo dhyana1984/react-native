@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import{ View, Text, TextInput,TouchableOpacity,Image,StatusBar} from 'react-native';
-let angryMood = require('../image/angry.png');
 import MCV from '../MyCommonVariable/MyCommonVariable';
 
 export default class DiaryReader extends Component{
@@ -9,31 +8,31 @@ export default class DiaryReader extends Component{
             <View style={MCV.container}>
                 <StatusBar hidden={true}/>
                 <View style={MCV.firstRow}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.returnPressed}>
                         <Text style={MCV.middleButton}>
                             返回
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.readingPreviousPressed}>
                         <Text style={MCV.middleButton}>
                             上一篇
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.readingNextPressed}> 
                         <Text style={MCV.middleButton}>
                             下一篇
                         </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={MCV.secondRow}>
-                    <Image style={MCV.moodStyle} source={angryMood}/>
+                    <Image style={MCV.moodStyle} source={this.props.diaryMood}/>{/*上层传入的表情被渲染*/}
                     <View style={MCV.subViewInReader}>
                         <Text style={MCV.textInReader}>
-                            日记标题：测试标题
+                            {this.props.diaryTitle}{/*上层传入的日记标题被渲染 */}
 
                         </Text>
                         <Text style={MCV.textInReader}>
-                            时间，2019-08-30
+                            {this.props.diaryTime} {/*上层传入的日记时间被渲染 */}
                         </Text>
 
                     </View>
@@ -42,7 +41,7 @@ export default class DiaryReader extends Component{
                 <TextInput style={[MCV.diaryAbstractList,{color:'black'}]}
                             multiline={true}
                             editable={false}
-                            value={'测试日记内容'}/>
+                            value={this.props.diaryBody}/>{/*上层传入的日记内容被渲染 */}
             </View>
         )
     }

@@ -2,13 +2,15 @@ import React,{Component} from 'react';
 import{
     View,Text,TextInput,TouchableOpacity,Image,StatusBar
 } from 'react-native';
-
-let angryMood = require('../image/angry.png');
 import MCV from '../MyCommonVariable/MyCommonVariable';
-
 export default class DiaryList extends Component{
+    constructor(props){
+        super(props);
+        this.updateSearchKeyword= this.updateSearchKeyword.bind(this);
+    }
     updateSearchKeyword(newWord){
-        //TODO
+        //将用户输入的搜索关键字交给上层组件，由上层组件对日记列表进行处理，只显示日记标题中包含关键字的日记
+        this.props.searchKeyWord(newWord);
     }
 
     render(){
@@ -22,11 +24,11 @@ export default class DiaryList extends Component{
                         placeholder="请输入搜索关键字" 
                         clearButtonMode="while-editing"
                         onChangeText={this.updateSearchKeyword}
-                        style={MCV.searchBarTextInput}>
+                        style={MCV.searchBarTextInput}/>
 
-                        </TextInput>
+                        
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.writeDiary}> 
                         
                             <Text style={MCV.middleButton}>
                                 写日记
@@ -36,15 +38,15 @@ export default class DiaryList extends Component{
                 </View>
                 <View style={MCV.diaryAbstractList}>
                     <View style={MCV.secondRow}>
-                        <Image style={MCV.moodStyle} source={angryMood}/>
+                        <Image style={MCV.moodStyle} source={this.props.diaryMood}/>
                         <View style={MCV.subViewInReader}>
-                            <TouchableOpacity onPress={this.props.selectLististItem}>
+                            <TouchableOpacity onPress={this.props.selectListItem}>
                                 <Text style={MCV.textInReader}>
-                                    测试日记列表标题
+                                    {this.props.fakeListTitle}
                                 </Text> 
                             </TouchableOpacity>
                             <Text style={MCV.textInReader}>
-                                测试日记列表时间
+                                {this.props.fakeListTime}
 
                             </Text>
 
