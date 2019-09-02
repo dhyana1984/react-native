@@ -30,7 +30,7 @@ export default class DiaryList extends Component{
             this.moodCode=1;
         }
         else{
-            this.moodCode==this.moodCode+1;
+            this.moodCode=this.moodCode+1;
         }
         switch(this.moodCode){
             case 1:
@@ -54,6 +54,8 @@ export default class DiaryList extends Component{
                 moodText:tempString
             }
         })
+        console.log(tempString);
+        console.log(this.moodCode);
     }
     render(){
         return (

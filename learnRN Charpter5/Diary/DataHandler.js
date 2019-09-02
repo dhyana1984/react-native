@@ -52,7 +52,7 @@ export default class DataHandler{
                                             newMoodIcon=suprise;
                                     }
                                     let newtitle = DataHandler.realDiaryList[resultsLength].title;
-                                    let newbody = DataHandler.realDiaryList[resultsLength.body];
+                                    let newbody = DataHandler.realDiaryList[resultsLength].body;
                                     //利用Date构造函数，从字符串中得到Date数据类型
 
                                     let ctime = new Date(DataHandler.realDiaryList[resultsLength].time);
@@ -102,7 +102,7 @@ export default class DataHandler{
 
     static bubleSortDiaryList(){//AsyncStorage API不保证读取顺序，使用冒泡排序法对日记列表进行排序
         let tempObj;
-        for(elti=0;i<DataHandler.realDiaryList.length;i++){
+        for(let i=0;i<DataHandler.realDiaryList.length;i++){
             for(let j=0;j<DataHandler.realDiaryList.length-i-1;j++){
                 if(DataHandler.realDiaryList[j].index>DataHandler.realDiaryList[j+1].index){
                     tempObj=DataHandler.realDiaryList[j];
@@ -135,7 +135,7 @@ export default class DataHandler{
                 newMoodIcon=suprise;
         }
         let newtitle = DataHandler.realDiaryList[resultsLength].title;
-        let newbody = DataHandler.realDiaryList[resultsLength.body];
+        let newbody = DataHandler.realDiaryList[resultsLength].body;
         let ctime = new Date(DataHandler.realDiaryList[resultsLength].time);
         let timeString = ' '+ctime.getFullYear()+ '年'
                             +(ctime.getMonth()+1)+ '月'
@@ -148,7 +148,7 @@ export default class DataHandler{
             diaryMood:newMoodIcon,
             diaryTime:timeString,
             diaryTitle:newtitle,
-            diarybody:newbody
+            diaryBody:newbody
 
         };
     }
@@ -174,7 +174,7 @@ export default class DataHandler{
                 newMoodIcon=suprise;
         }
         let newtitle = DataHandler.realDiaryList[resultsLength].title;
-        let newbody = DataHandler.realDiaryList[resultsLength.body];
+        let newbody = DataHandler.realDiaryList[resultsLength].body;
         let ctime = new Date(DataHandler.realDiaryList[resultsLength].time);
         let timeString = ' '+ctime.getFullYear()+ '年'
                             +(ctime.getMonth()+1)+ '月'
@@ -187,14 +187,14 @@ export default class DataHandler{
             diaryMood:newMoodIcon,
             diaryTime:timeString,
             diaryTitle:newtitle,
-            diarybody:newbody
+            diaryBody:newbody
 
         };
     }
 
     static saveDiary(newDiaryMood,newDiaryBody, newDiaryTitle){//保存日记数据
         return new Promise(function(resolve,reject){
-            let currentTime = new Date();//获取当前时间
+            let ctime = new Date();//获取当前时间
             let timeString = ' '+ctime.getFullYear()+ '年'
                             +(ctime.getMonth()+1)+ '月'
                             +ctime.getDate()+ '日 星期'
@@ -207,12 +207,12 @@ export default class DataHandler{
             aDiary.title=newDiaryTitle;
             aDiary.body=newDiaryBody;
             aDiary.mood=newDiaryMood;
-            aDiary.time=currentTime;
+            aDiary.time=ctime;
             //sectionID用来对日记进行分段显示
             aDiary.sectionID = ' '+ctime.getFullYear()+ '年'
                                 +(ctime.getMonth()+1)+ '月';
             //从当前时间生成谓一致，用来索引日记列表，这个值精确到毫秒，可以认为是唯一的;
-            aDiary.index=Date.parse(currentTime);
+            aDiary.index=Date.parse(ctime);
             AsyncStorage.setItem(''+aDiary.index, JSON.stringify(aDiary)).then(
                 ()=>{//save新的日记到asyncstorage
                     let totalLenth = DataHandler.realDiaryList.length;
@@ -241,7 +241,7 @@ export default class DataHandler{
                         diaryTime:timeString,
                         diaryTitle:newDiaryTitle,
                         diaryMood: newMoodIcon,
-                        diarybody: newDiaryBody
+                        diaryBody: newDiaryBody
                     };
                     resolve(aValue);//返回最新写的日记数据
 

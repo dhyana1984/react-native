@@ -37,6 +37,7 @@ export default class DiaryList extends Component{
                     </TouchableOpacity>
                 </View>
                 <View style={MCV.diaryAbstractList}>
+                    
                     <View style={MCV.secondRow}>
                         <Image style={MCV.moodStyle} source={this.props.diaryMood}/>
                         <View style={MCV.subViewInReader}>

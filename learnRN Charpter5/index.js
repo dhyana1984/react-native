@@ -22,7 +22,7 @@ export default class LearnRN extends Component{
             diaryBody:'Loading...',
         };
         this.bindAllMyFunction();//执行回调函数绑定操作
-        DataHandler.getAllTheDiary().then( //获取多有日志数据
+        DataHandler.getAllTheDiary().then( //获取所有日志数据
             (result) =>{
                 this.setState(result);
             }
@@ -107,13 +107,13 @@ export default class LearnRN extends Component{
                          diaryTime={this.state.diaryTime}
                          readingNextPressed={this.readingNextPressed}
                          readingPreviousPressed={this.readingPreviousPressed}
-                         returnPassed={this.returnPassed}
+                         returnPressed={this.returnPressed}
                          diaryBody={this.state.diaryBody}/>
         );
     };
     showDiaryWriter(){
         return (
-            <DiaryWriter returnPassed={this.returnPressed}
+            <DiaryWriter returnPressed={this.returnPressed}
                             saveDiary={this.saveDiaryAndReturn}/>
         )
     };
