@@ -1,11 +1,15 @@
 import React,{Component} from 'react';
 import{
-    View,Text,TextInput,TouchableOpacity,Image,StatusBar
+    View,Text,TextInput,TouchableOpacity,Image,StatusBar,FlatList
 } from 'react-native';
 import MCV from '../MyCommonVariable/MyCommonVariable';
 export default class DiaryList extends Component{
     constructor(props){
         super(props);
+        this.state={
+            diaryListDataSource: [],
+        };
+        this.renderListItem = this.renderListItem.bind(this);
         this.updateSearchKeyword= this.updateSearchKeyword.bind(this);
     }
     updateSearchKeyword(newWord){
@@ -13,6 +17,40 @@ export default class DiaryList extends Component{
         this.props.searchKeyWord(newWord);
     }
 
+    //替代componentWillMount方法
+    static getDerivedStateFromProps(nextProps,state){
+        if(nextProps.diaryList!==state.diaryListDataSource){
+            return {
+                diaryListDataSource: nextProps.diaryList,            
+            }
+        }
+        return null;
+
+    }
+    //renderListItem定义如何渲染每一行，三个参数是reactnative框架提供
+    //log是一个对象，代表当前列的相应数据，通过dataSourece提供
+    //sectionID代表当前列表分段号，rowID代表当前行在整个列中的行号
+    renderListItem(log,sectionID,rowID){
+        return (
+            <TouchableOpacity onPress={()=> this.props.selectLististItem(rowID)}>
+                <View style={MCV.secondRow} >
+                    <Image style={MCV.moodStyle} source={log.item.mood}/>
+                    <View style={MCV.subViewInReader}>
+                        <Text style={MCV.textInReader}>
+                            {log.item.title}
+
+                        </Text>
+                   
+                        <Text style={MCV.textInReader}>
+                            {log.item.time}
+
+                        </Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+
+    }
     render(){
         return (
             <View style={MCV.container}>
@@ -36,7 +74,7 @@ export default class DiaryList extends Component{
                     
                     </TouchableOpacity>
                 </View>
-                <View style={MCV.diaryAbstractList}>
+                {/* <View style={MCV.diaryAbstractList}>
                     
                     <View style={MCV.secondRow}>
                         <Image style={MCV.moodStyle} source={this.props.diaryMood}/>
@@ -54,7 +92,26 @@ export default class DiaryList extends Component{
                         </View>
                     </View>
 
-                </View>
+                </View> */}
+
+                {(
+                    (this.props.diaryList.length !== 0)?
+                    (
+                        //ListView组件dataSource描述列表数据
+                        //renderRow描述如何渲染列表中的每一行，这里是挂接的renderListItem函数
+                        //FlatList替代ListView, data替代dataSource，必须用keyExtractor加Key
+                        <FlatList   data={this.state.diaryListDataSource} 
+                                    renderItem={this.renderListItem} 
+                                    keyExtractor={(item, index) => index.toString()}>
+                               
+                        </FlatList>
+                    ):
+                    (
+                        <View style={{flex:1,justifyContent:'center'}}>
+                            <Text style={{fontSize:18}}>您还没写日记哦</Text>
+                        </View>
+                    )
+                )}
             </View>
         )
     }

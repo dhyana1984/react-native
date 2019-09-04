@@ -16,15 +16,16 @@ export default class LearnRN extends Component{
         super(props);
         this.state={
             uiCode:1,
+            diaryList:[],
             diaryMood:null,
-            diaryTime:'Loading...',
-            diaryTitle:'Loading...',
-            diaryBody:'Loading...',
+            diaryTime:'读取中...',
+            diaryTitle:'读取中...',
+            diaryBody:'读取中...',
         };
         this.bindAllMyFunction();//执行回调函数绑定操作
         DataHandler.getAllTheDiary().then( //获取所有日志数据
             (result) =>{
-                this.setState(result);
+                this.setState({diaryList:result});
             }
         ).catch(
             (error) =>{
@@ -33,7 +34,8 @@ export default class LearnRN extends Component{
         )
     }
     bindAllMyFunction(){
-        this.selectListItem = this.selectListItem.bind(this);
+        //this.selectListItem = this.selectListItem.bind(this);//
+        this.selectLististItem = this.selectLististItem.bind(this);//
         this.writeDiary = this.writeDiary.bind(this);
         this.returnPressed = this.returnPressed.bind(this);
         this.saveDiaryAndReturn = this.saveDiaryAndReturn.bind(this);
@@ -82,26 +84,32 @@ export default class LearnRN extends Component{
         //TODO
         console.log('Search keyword is:'+keyWord)
     }
-    selectListItem(){ //日记某条被选中处理函数
-        this.setState({
-            uiCode:2
-        })
-    }
+    // selectListItem(){ //日记某条被选中处理函数
+    //     this.setState({
+    //         uiCode:2
+    //     })
+    // }
 
+    //选中具体的哪一行日记
+    selectLististItem(aIndex){
+        let rValue = DataHandler.getDiaryAtIndex(aIndex);
+        this.setState(rValue)
+    }
     showDiaryList(){
         return (
             <DiaryList fakeListTitle={this.state.diaryTitle}
                         fakeListTime={this.state.diaryTime}
                         fakeListMood={this.state.diaryMood}
-                        selectListItem={this.selectListItem}
+                        selectLististItem={this.selectLististItem}
                         searchKeyWord={this.searchKeyWord}
-                        writeDiary={this.writeDiary}/>
+                        writeDiary={this.writeDiary}
+                        diaryList={this.state.diaryList}/>
                         
         );
     };
     showDiaryReader(){
         return (
-            <DiaryReader returnToDiaryList={this.returnPassed}
+            <DiaryReader returnToDiaryList={this.returnPressed}
                          diaryTitle={this.state.diaryTitle}
                          diaryMood={this.state.diaryMood}
                          diaryTime={this.state.diaryTime}
