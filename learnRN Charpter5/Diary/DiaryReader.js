@@ -8,7 +8,7 @@ export default class DiaryReader extends Component{
             <View style={MCV.container}>
                 <StatusBar hidden={true}/>
                 <View style={MCV.firstRow}>
-                    <TouchableOpacity onPress={this.props.returnPressed}>
+                    <TouchableOpacity onPress={()=> this.props.returnPressed(this.props.keyWord)}>
                         <Text style={MCV.middleButton}>
                             返回
                         </Text>

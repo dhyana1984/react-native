@@ -8,13 +8,16 @@ export default class DiaryList extends Component{
         super(props);
         this.state={
             diaryListDataSource: [],
+            searchWord:''
         };
         this.renderListItem = this.renderListItem.bind(this);
         this.updateSearchKeyword= this.updateSearchKeyword.bind(this);
     }
-    updateSearchKeyword(newWord){
+    updateSearchKeyword(keyWord){
         //将用户输入的搜索关键字交给上层组件，由上层组件对日记列表进行处理，只显示日记标题中包含关键字的日记
-        this.props.searchKeyWord(newWord);
+        this.setState({searchWord:keyWord})
+        this.props.searchKeyWord(keyWord);
+
     }
 
     //替代componentWillMount方法
@@ -30,19 +33,19 @@ export default class DiaryList extends Component{
     //renderListItem定义如何渲染每一行，三个参数是reactnative框架提供
     //log是一个对象，代表当前列的相应数据，通过dataSourece提供
     //sectionID代表当前列表分段号，rowID代表当前行在整个列中的行号
-    renderListItem(log,sectionID,rowID){
+    renderListItem({item,index}){
         return (
-            <TouchableOpacity onPress={()=> this.props.selectLististItem(rowID)}>
+            <TouchableOpacity onPress={()=> this.props.selectLististItem(index)}>
                 <View style={MCV.secondRow} >
-                    <Image style={MCV.moodStyle} source={log.item.mood}/>
+                    <Image style={MCV.moodStyle} source={item.mood}/>
                     <View style={MCV.subViewInReader}>
                         <Text style={MCV.textInReader}>
-                            {log.item.title}
+                            {item.title}
 
                         </Text>
                    
                         <Text style={MCV.textInReader}>
-                            {log.item.time}
+                            {item.time}
 
                         </Text>
                     </View>
@@ -62,7 +65,8 @@ export default class DiaryList extends Component{
                         placeholder="请输入搜索关键字" 
                         clearButtonMode="while-editing"
                         onChangeText={this.updateSearchKeyword}
-                        style={MCV.searchBarTextInput}/>
+                        style={MCV.searchBarTextInput}
+                        value={this.props.keyWord}/>
 
                         
                     </View>

@@ -21,6 +21,7 @@ export default class LearnRN extends Component{
             diaryTime:'读取中...',
             diaryTitle:'读取中...',
             diaryBody:'读取中...',
+            searchWord:''
         };
         this.bindAllMyFunction();//执行回调函数绑定操作
         DataHandler.getAllTheDiary().then( //获取所有日志数据
@@ -41,6 +42,7 @@ export default class LearnRN extends Component{
         this.saveDiaryAndReturn = this.saveDiaryAndReturn.bind(this);
         this.readingPreviousPressed = this.readingPreviousPressed.bind(this);
         this.readingNextPressed = this.readingNextPressed.bind(this);
+        this.searchKeyWord=this.searchKeyWord.bind(this);
     }
     readingNextPressed(){
         let nextDiary = DataHandler.getNextDiary();
@@ -59,8 +61,8 @@ export default class LearnRN extends Component{
         
     }
 
-    returnPressed(){
-        this.setState({uiCode:1});
+    returnPressed(keyWord){
+        this.setState({uiCode:1,searchKeyWord:keyWord});
     }
     saveDiaryAndReturn( newDiaryMood,newDiaryBody,newDiaryTitle){
         DataHandler.saveDiary(newDiaryMood,newDiaryBody, newDiaryTitle).then(
@@ -82,6 +84,13 @@ export default class LearnRN extends Component{
     }
     searchKeyWord(keyWord){
         //TODO
+       var filterDiaries = DataHandler.getDiaryByKeyWord(keyWord);
+       this.setState(() => {
+           return {
+               diaryList:filterDiaries,
+               searchWord:keyWord
+            }
+        });
         console.log('Search keyword is:'+keyWord)
     }
     // selectListItem(){ //日记某条被选中处理函数
@@ -103,7 +112,8 @@ export default class LearnRN extends Component{
                         selectLististItem={this.selectLististItem}
                         searchKeyWord={this.searchKeyWord}
                         writeDiary={this.writeDiary}
-                        diaryList={this.state.diaryList}/>
+                        diaryList={this.state.diaryList}
+                        keyWord={this.state.searchWord}/>
                         
         );
     };
@@ -116,7 +126,8 @@ export default class LearnRN extends Component{
                          readingNextPressed={this.readingNextPressed}
                          readingPreviousPressed={this.readingPreviousPressed}
                          returnPressed={this.returnPressed}
-                         diaryBody={this.state.diaryBody}/>
+                         diaryBody={this.state.diaryBody}
+                         keyWord={this.state.searchWord}/>
         );
     };
     showDiaryWriter(){

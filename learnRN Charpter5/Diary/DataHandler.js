@@ -1,4 +1,5 @@
 import {AsyncStorage} from 'react-native';
+// import AsyncStorage from '@react-native-community/async-storage';
 let angryMood = require("../image/angry.png");
 let happyMood = require("../image/happy.png");
 let sadMood = require("../image/sad.png");
@@ -8,6 +9,11 @@ let suprise = require("../image/suprise.png");
 export default class DataHandler{
     static realDiaryList=[];
     static listIndex =0;
+    static getDiaryByKeyWord(keyWord){
+        var word = keyWord.replace(/\s*/g,'')
+        realDiaryList = this.realDiaryList.filter(item=> item.title.indexOf(word)>-1);
+        return realDiaryList;
+    }
     static getAllTheDiary(){ //获取存储中所有日记
         return new Promise(
             function(resolve,reject){
@@ -175,7 +181,7 @@ export default class DataHandler{
         return{
             uiCode:2,
             diaryTime:DataHandler.realDiaryList[aIndex].time,
-            diatyTitle:DataHandler.realDiaryList[aIndex].title,
+            diaryTitle:DataHandler.realDiaryList[aIndex].title,
             diaryMood:DataHandler.realDiaryList[aIndex].mood,
             diaryBody:DataHandler.realDiaryList[aIndex].body,
         }
