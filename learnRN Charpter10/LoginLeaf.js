@@ -2,28 +2,36 @@
  * @format
  */
 import React,{Component} from 'react';
-import {StyleSheet,Text,View,Dimensions,TextInput,Alert} from 'react-native';
+import {StyleSheet,Text,View,Dimensions,TextInput,Alert,Image} from 'react-native';
 let widthOfMargin = Dimensions.get('window').width * 0.05;
 
 
 export default class LoginLeaf extends Component{
 
-    static navigationOptions={ //定义导航选项，组件屏幕导航选项
-        title:'登录',
+    // static navigationOptions={ //定义导航选项，组件屏幕导航选项
+    //     title:'登录',
+    // }
+    static navigationOptions = {
+        drawerLabel:'Login',
+        drawerIcon:({tintColor}) => (
+            <Image
+                source={require('./chats-icon.png')}  style={[styles.icon,{tintColor:tintColor}]}
+            />
+        )
     }
     constructor(props){
         super(props);
         this.state={
-            inputedNum:'',
-            inputedPW:'',
+            phoneNumber:'',
+            userPW:'',
         };
         this.updatePW = this.updatePW.bind(this);
         this.updateNum = this.updateNum.bind(this);
         this.jumpToWaiting = this.jumpToWaiting.bind(this);
     }
-    updateNum(inputedNum){
+    updateNum(phoneNumber){
         this.setState(() =>{
-            return {inputedNum};
+            return {phoneNumber};
         });
     }
     changeNumDone(){
@@ -31,13 +39,13 @@ export default class LoginLeaf extends Component{
     }
     //To justify if renden(something change in ui side)
     // shouldComponentUpdate(){
-    //     if(this.state.inputedNum.length < 3){
+    //     if(this.state.phoneNumber.length < 3){
     //         return false;
     //     }
     //     return true; 
     // }
-    updatePW(inputedPW){
-        this.setState({inputedPW});
+    updatePW(userPW){
+        this.setState({userPW});
     }
     render(){
        
@@ -48,7 +56,7 @@ export default class LoginLeaf extends Component{
             onChangeText={this.updateNum}
             />
             <Text style={styles.textPromptStyle}>
-                Your phone numbers:{this.state.inputedNum}
+                Your phone numbers:{this.state.phoneNumber}
             </Text>
             <TextInput style={styles.TextInputStyle} 
             placeholder={'Please input password'} 
@@ -65,29 +73,31 @@ export default class LoginLeaf extends Component{
         );
     }
     userPressConfirm(){
-        // this.props.onLoginPressed(this.state.inputedNum,this.state.inputedPW);
+        // this.props.onLoginPressed(this.state.phoneNumber,this.state.userPW);
 
         //弹出框, onPress是点击选项后的操作方法，如果有style:'cancel'则排在最后
         //ios可以加无限个选项，android只能有3个，多余3个忽略，而且style:'cancel'也不会排在最后
-        Alert.alert(
-            '提示',
-            'Are you sure login with '+this.state.inputedNum+'?',
-            [
-                {text:'Cancel',onPress:(()=>{}),style:'cancel'},//按下取消无操作
-                {text:'Confirm',onPress:this.jumpToWaiting}
-            ]
-        )
+        // Alert.alert(
+        //     '提示',
+        //     'Are you sure login with '+this.state.phoneNumber+'?',
+        //     [
+        //         {text:'Cancel',onPress:(()=>{}),style:'cancel'},//按下取消无操作
+        //         {text:'Confirm',onPress:this.jumpToWaiting}
+        //     ]
+        // )
+        console.log(1234)
+        this.props.navigation.openDrawer()//打开抽屉导航
     }
     userPressAddressBook(){
         //TODO
     }
     jumpToWaiting(){
-        // this.props.onLoginPressed(this.state.inputedNum,this.state.inputedPW);
+        // this.props.onLoginPressed(this.state.phoneNumber,this.state.userPW);
         this.props.navigation.navigate('Wait',//导航跳转命令
             //传递属性
             { 
-                phoneNumber: this.state.inputedNum,
-                userPW:this.state.inputedPW,
+                phoneNumber: this.state.phoneNumber,
+                userPW:this.state.userPW,
             }
         )
     }
@@ -114,6 +124,10 @@ const styles = StyleSheet.create({
         color:'white',
         textAlign:'center',
         fontSize:30
+    },
+    icon:{
+        width:24,
+        height:24
     }
 });
 
