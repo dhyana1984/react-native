@@ -28,6 +28,7 @@ export default class LoginLeaf extends Component{
         this.updatePW = this.updatePW.bind(this);
         this.updateNum = this.updateNum.bind(this);
         this.jumpToWaiting = this.jumpToWaiting.bind(this);
+        this.showWaitingModalBeforeJump = this.showWaitingModalBeforeJump.bind(this)
     }
     updateNum(phoneNumber){
         this.setState(() =>{
@@ -77,22 +78,27 @@ export default class LoginLeaf extends Component{
 
         //弹出框, onPress是点击选项后的操作方法，如果有style:'cancel'则排在最后
         //ios可以加无限个选项，android只能有3个，多余3个忽略，而且style:'cancel'也不会排在最后
-        // Alert.alert(
-        //     '提示',
-        //     'Are you sure login with '+this.state.phoneNumber+'?',
-        //     [
-        //         {text:'Cancel',onPress:(()=>{}),style:'cancel'},//按下取消无操作
-        //         {text:'Confirm',onPress:this.jumpToWaiting}
-        //     ]
-        // )
-        console.log(1234)
-        this.props.navigation.openDrawer()//打开抽屉导航
+        Alert.alert(
+            '提示',
+            'Are you sure login with '+this.state.phoneNumber+'?',
+            [
+                {text:'Cancel',onPress:(()=>{}),style:'cancel'},//按下取消无操作
+                // {text:'Confirm',onPress:this.jumpToWaiting}
+                {text:'Confirm',onPress: this.showWaitingModalBeforeJump}
+            ]
+        )
+      
+    
+        // this.props.navigation.openDrawer()//打开抽屉导航
+
     }
     userPressAddressBook(){
         //TODO
     }
     jumpToWaiting(){
         // this.props.onLoginPressed(this.state.phoneNumber,this.state.userPW);
+
+        this.props.screenProps.setWaitingModal( false, '' );//定时器到时时，关闭自定义 Modal，并跳转页面
         this.props.navigation.navigate('Wait',//导航跳转命令
             //传递属性
             { 
@@ -100,6 +106,11 @@ export default class LoginLeaf extends Component{
                 userPW:this.state.userPW,
             }
         )
+    }
+
+    showWaitingModalBeforeJump() { 
+        this.props.screenProps.setWaitingModal( true, 'Please Wait...' );  //当用户按下确定时，启动一个定时器，并显示自定义 Modal
+        this.aTimer = window.setTimeout( this.jumpToWaiting, 2000);
     }
     
 }

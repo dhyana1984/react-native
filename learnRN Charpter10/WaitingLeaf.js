@@ -42,65 +42,65 @@ export default class WaitingLeaf extends Component{
         );
     }
     onGobackPressed(){
-        // this.props.navigation.goBack();
+        this.props.navigation.goBack();
        
-        const resetAction = StackActions.reset({
-            index:3,
-            actions:[
-                NavigationActions.navigate(
-                    {
-                        routeName:'Home'
-                    }
-                ),
-                NavigationActions.navigate(
-                    {
-                        routeName:'Wait',
-                        params:{
-                            phoneNumber:1,
-                            userPW:1
-                        }
-                    }
-                ),
-                NavigationActions.navigate(
-                    {
-                        routeName:'Wait',
-                        params:{
-                            phoneNumber:2,
-                            userPW:2
-                        }
-                    }
-                ),
-                NavigationActions.navigate(
-                    {
-                        routeName:'Wait',
-                        params:{
-                            phoneNumber:3,
-                            userPW:3
-                        }
-                    }
-                ),
-                NavigationActions.navigate(
-                    {
-                        routeName:'Wait',
-                        params:{
-                            phoneNumber:4,
-                            userPW:4
-                        }
-                    }
-                ),
-                NavigationActions.navigate( 
-                    {
-                        routeName:'Wait',
-                        params:{
-                            phoneNumber:5,
-                            userPW:5
-                        }
-                    }
-                ),
-            ]
-        })
-        this.props.navigation.dispatch(resetAction);
-    }
+    //     const resetAction = StackActions.reset({
+    //         index:3,
+    //         actions:[
+    //             NavigationActions.navigate(
+    //                 {
+    //                     routeName:'Home'
+    //                 }
+    //             ),
+    //             NavigationActions.navigate(
+    //                 {
+    //                     routeName:'Wait',
+    //                     params:{
+    //                         phoneNumber:1,
+    //                         userPW:1
+    //                     }
+    //                 }
+    //             ),
+    //             NavigationActions.navigate(
+    //                 {
+    //                     routeName:'Wait',
+    //                     params:{
+    //                         phoneNumber:2,
+    //                         userPW:2
+    //                     }
+    //                 }
+    //             ),
+    //             NavigationActions.navigate(
+    //                 {
+    //                     routeName:'Wait',
+    //                     params:{
+    //                         phoneNumber:3,
+    //                         userPW:3
+    //                     }
+    //                 }
+    //             ),
+    //             NavigationActions.navigate(
+    //                 {
+    //                     routeName:'Wait',
+    //                     params:{
+    //                         phoneNumber:4,
+    //                         userPW:4
+    //                     }
+    //                 }
+    //             ),
+    //             NavigationActions.navigate( 
+    //                 {
+    //                     routeName:'Wait',
+    //                     params:{
+    //                         phoneNumber:5,
+    //                         userPW:5
+    //                     }
+    //                 }
+    //             ),
+    //         ]
+    //     })
+    //     this.props.navigation.dispatch(resetAction);
+      }
 }
 //通过propTypes定义prop的值的类型，如果类型不对，会在设备上或者调试console里面显示警告信息
 //仅在开发环境有效
