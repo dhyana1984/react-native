@@ -9,16 +9,19 @@ var totalWidth = Dimensions.get('window').width
 export default class LearnRN extends Component{
     constructor(props){
         super(props);
-        this.watcher = null;
-        this.watcherSlide = null
+        this.watcher = null;        //拖动显示百分比
+        this.watcherSlide = null    //拖动滑槽颜色变化
+        this.watcherSlideButton=null     //拖动滑块延滑槽滑动
         this.startFromLeft = true;
         this.moveNeedhandle = false;
+        this.startX=0
         this.state={
             progress:0,
             leftViewWidth:0,
             rightViewWidth: totalWidth -40,
             leftViewColor:'grey',
-            rightViewColor:'grey'
+            rightViewColor:'grey',
+            leftPoint:1
         };
         this._onPanResponderGrant = this._onPanResponderGrant.bind(this);
         this._onPanResponderMove = this._onPanResponderMove.bind(this);
@@ -26,6 +29,10 @@ export default class LearnRN extends Component{
         this._onPanResponderGrantSlide = this._onPanResponderGrantSlide.bind(this);
         this._onPanResponderMoveSlide = this._onPanResponderMoveSlide.bind(this);
         this._onPanResponderEndSlide = this._onPanResponderEndSlide.bind(this);
+
+        this._onPanResponderGrantSlideButton = this._onPanResponderGrantSlideButton.bind(this);
+        this._onPanResponderMoveSlideButton = this._onPanResponderMoveSlideButton.bind(this);
+        this._onPanResponderEndSlideButton = this._onPanResponderEndSlideButton.bind(this);
     }
     componentWillMount(){
         this.watcher = PanResponder.create({ //建立监视器
@@ -40,6 +47,13 @@ export default class LearnRN extends Component{
             onPanResponderGrant:this._onPanResponderGrantSlide, //按下事件
             onPanResponderMove: this._onPanResponderMoveSlide,//移动事件
             onPanResponderEnd: this._onPanResponderEndSlide  //松手事件
+        })
+
+        this.watcherSlideButton= PanResponder.create({
+            onStartShouldSetPanResponder:() => true, //直接返回true
+            onPanResponderGrant:this._onPanResponderGrantSlideButton, //按下事件
+            onPanResponderMove: this._onPanResponderMoveSlideButton,//移动事件
+            onPanResponderEnd: this._onPanResponderEndSlideButton  //松手事件
         })
     }
 
@@ -91,6 +105,10 @@ export default class LearnRN extends Component{
             leftViewWidth,
             rightViewWidth})
     }
+
+    _onPanResponderGrantSlideButton(e,gestureState){
+        this.startX = gestureState.x0
+    }
     _onPanResponderMove(e, gestureState){
         let touchPointX=gestureState.moveX
         let progress
@@ -132,6 +150,23 @@ export default class LearnRN extends Component{
             })
         }
     }
+    _onPanResponderMoveSlideButton(e,gestureState){
+        let leftPoint                                       //移动滑块，计算滑块偏移值
+        if(gestureState.moveX < this.startX){               //
+            leftPoint =1                                    //滑块向左偏移到尽头，不继续偏移
+        }else{
+            if(gestureState.moveX > totalWidth-42-48+this.startX){
+                leftPoint = totalWidth - 42-48              //需要改变滑块位置
+            }else{                                          //滑块向右偏移到尽头，不继续偏移
+                leftPoint=gestureState.moveX - this.startX 
+                //这里写解锁屏幕，跳转界面的代码，或者接通电话跳转界面
+            }
+        }
+        this.setState(() =>{
+            return {leftPoint}                              //请求重新渲染界面
+        })
+    }
+
     _onPanResponderEndSlide(e,gestureState){    //用户松开手指的处理
         this.moveNeedhandle=false               //设置为不需要处理移动事件
         this.setState({
@@ -141,6 +176,14 @@ export default class LearnRN extends Component{
             rightViewWidth:totalWidth-40
         })
     }   
+
+    _onPanResponderEndSlideButton(e,gestureState){          //松开手指，滑块回复默认值
+        let leftPoint=1
+        this.setState(()=>{
+            return {leftPoint}
+        })
+    }
+
     
     render(){
         return (
@@ -156,6 +199,15 @@ export default class LearnRN extends Component{
                     <View style={[styles.setHeightStyle,{width:this.state.leftViewWidth, backgroundColor: this.state.leftViewColor}]} />
                     <View style={[styles.setHeightStyle,{width:this.state.rightViewWidth, backgroundColor: this.state.rightViewColor}]} />
                 </View>
+          
+                <View style={styles.barViewStyle}>
+                    <View style={[styles.buttonViewStyle,{left: this.state.leftPoint}]}
+                    {...this.watcherSlideButton.panHandlers}>
+
+                    </View>
+
+                </View>
+
             </View>
             
             
@@ -190,11 +242,24 @@ var styles = StyleSheet.create({
         height:50,
         left:20,
         top:100,
-        flexDirection:'row'
+        flexDirection:'row',
+        backgroundColor:'grey',
+        borderRadius:25,
+        bottom:100
+
     },
     setHeightStyle:{
         height:50
+    },
+    buttonViewStyle:{
+        width:48,
+        height:48,
+        borderRadius:24,
+        backgroundColor:'white',
+        left:1,
+        top:1,
     }
+
 
     
 })
