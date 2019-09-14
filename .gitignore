@@ -2,3 +2,5 @@
 **/android/
 **/ios/Pods/
 **/ios/build/
+**/.DS_Store
+.DS_Store
