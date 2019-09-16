@@ -7,3 +7,9 @@
 //
 
 import Foundation
+@objc(RNGradientViewSwift)
+class RNGradientViewManager: RCTViewManager {
+  override func view() -> UIView! {
+    return RNGradientView();
+  }
+}

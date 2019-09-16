@@ -6,8 +6,9 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#ifndef RNOCGradientView_h
-#define RNOCGradientView_h
+#import <React/RCTView.h>
+@interface RNOCGradientView : RCTView
 
-
-#endif /* RNOCGradientView_h */
+@property (nonatomic, assign) NSArray *locations;
+@property (nonatomic, assign) NSArray *colors;
+@end

@@ -4,3 +4,5 @@
 **/ios/build/
 **/.DS_Store
 .DS_Store
+**/FLAnimatedImage-master
+**/GradientView-master

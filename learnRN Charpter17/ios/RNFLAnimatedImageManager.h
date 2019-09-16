@@ -6,8 +6,8 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#ifndef RNFLAnimatedImageManager_h
-#define RNFLAnimatedImageManager_h
+#import <Foundation/Foundation.h>
+#import <React/RCTViewManager.h>
+@interface RNFLAnimatedImageManager : RCTViewManager
+@end
 
-
-#endif /* RNFLAnimatedImageManager_h */
